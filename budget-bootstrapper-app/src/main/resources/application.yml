@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: budget-bootstrapper
+  datasource:
+    url: "jdbc:postgresql://localhost:5432/${POSTGRES_DB:mydatabase}"
+    username: ${POSTGRES_USER:budget_user}
+    password: ${POSTGRES_PASSWORD:budget_password}
+  jpa:
+    show-sql: true
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: ${OIDC_ISSUER_URI:https://oidc.example.com/issuer}

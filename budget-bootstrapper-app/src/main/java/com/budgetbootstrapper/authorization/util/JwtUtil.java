@@ -16,10 +16,10 @@ import java.util.Date;
 @Slf4j
 public class JwtUtil {
 
-  @Value("${jwtSecret}")
+  @Value("${jwtSecret:secret}")
   private String jwtSecret;
 
-  @Value("${jwtExpiration}")
+  @Value("${jwtExpiration:1000}")
   private int jwtExpiration;
 
   public String generateJwtToken(CustomUserDetails customUserDetails) {

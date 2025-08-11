@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.HashMap;
 import java.util.Map;
 
-@RequestMapping("/api/login")
+@RequestMapping("/auth")
 @RestController
 @Slf4j
 @RequiredArgsConstructor
@@ -29,8 +29,7 @@ public class AuthenticationController {
 
   private final JwtUtil jwtUtil;
 
-
-  @PostMapping
+  @PostMapping("/login")
   public ResponseEntity<?> login(@RequestBody UserInfo userInfo) {
     Map<String, Object> responseMap = new HashMap<>();
     try {
