@@ -5,6 +5,9 @@ spring:
     url: "jdbc:postgresql://localhost:5432/${POSTGRES_DB:mydatabase}"
     username: ${POSTGRES_USER:budget_user}
     password: ${POSTGRES_PASSWORD:budget_password}
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
   jpa:
     show-sql: true
   security:
@@ -12,3 +15,21 @@ spring:
       resourceserver:
         jwt:
           issuer-uri: ${OIDC_ISSUER_URI:https://oidc.example.com/issuer}
+
+#TODO: seperate crawler
+#crawler:
+#  args:
+#    host: ${MYSQL_HOST:localhost}
+#    port: ${MYSQL_PORT:3306}
+#    user: ${MYSQL_USERNAME:root}
+#    password: ${MYSQL_PASSWORD:root}
+#    database: ${MYSQL_DB:animal_news}
+#    maxIndex: ${CRAWLER_MAX_INDEX:60}
+#    targetUrl: ${CRAWLER_TARGET_URL:http://www.onegreatlifestyle.com/index.html?cate_id=5170}
+#    savingPath: ${CRAWLER_SAVING_PATH:../animal_images/public/}
+#  script-directory: ${CRAWLER_SCRIPT_DIRECTORY:../animal-crawler/}
+#  pushing-to-git-script-directory: ${CRAWLER_PUSH_TO_GIT_DIRECTORY:../animal_images/}
+#  cron-expression: 0 * * * * *
+#
+news:
+  image-url-prefix: ${NEWS_IMAGE_URL_PREFIX:http://localhost:8080/animal_images/}
