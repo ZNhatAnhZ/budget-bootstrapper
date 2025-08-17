@@ -31,5 +31,11 @@ spring:
 #  pushing-to-git-script-directory: ${CRAWLER_PUSH_TO_GIT_DIRECTORY:../animal_images/}
 #  cron-expression: 0 * * * * *
 #
+
 news:
   image-url-prefix: ${NEWS_IMAGE_URL_PREFIX:http://localhost:8080/animal_images/}
+
+storage:
+  push-file-to-git-script-directory: ${STORAGE_PUSH_TO_GIT_DIRECTORY:../animal_images/}
+  push-file-to-git-script-name: ${STORAGE_PUSH_TO_GIT_SCRIPT_NAME:pushFileToGit.sh}
+  base-url: ${STORAGE_BASE_URL:http://localhost:8080/animal_images/}
