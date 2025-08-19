@@ -17,8 +17,6 @@ import java.util.List;
 import static org.springframework.data.web.config.EnableSpringDataWebSupport.PageSerializationMode.VIA_DTO;
 
 @Configuration
-@EnableWebSecurity
-@EnableSpringDataWebSupport(pageSerializationMode = VIA_DTO)
 public class SpringSecurityConfig {
     @Bean
     CorsConfigurationSource corsConfigurationSource() {

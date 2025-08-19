@@ -18,7 +18,7 @@ public class NewsService {
 
     private final NewsRepository newsRepository;
 
-    @Value("${news.image-url-prefix}")
+    @Value("${animal-news.image-url-prefix}")
     private final String imageUrlPrefix;
 
     public Page<News> getAllPartialNews(int page, int size) {

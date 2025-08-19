@@ -1,4 +1,4 @@
-package com.budgetbootstrapper.animal_news.config;
+package com.budgetbootstrapper.crawler_mangement.config;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;

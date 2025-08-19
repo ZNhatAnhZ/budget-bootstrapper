@@ -1,0 +1,2 @@
+animal-news:
+  image-url-prefix: ${NEWS_IMAGE_URL_PREFIX:http://localhost:8080/animal_images/}

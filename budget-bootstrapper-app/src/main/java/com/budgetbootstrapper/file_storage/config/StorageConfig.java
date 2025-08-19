@@ -5,7 +5,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-@ConfigurationProperties(prefix = "storage")
+@ConfigurationProperties(prefix = "file-storage")
 @Data
 public class StorageConfig {
     private String pushFileToGitScriptDirectory;

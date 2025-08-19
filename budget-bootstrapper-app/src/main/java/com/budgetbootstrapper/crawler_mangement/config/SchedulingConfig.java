@@ -1,17 +1,13 @@
-package com.budgetbootstrapper.animal_news.config;
+package com.budgetbootstrapper.crawler_mangement.config;
 
-import com.budgetbootstrapper.animal_news.service.CrawlerExternalService;
+import com.budgetbootstrapper.crawler_mangement.service.CrawlerExternalService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
-import org.springframework.scheduling.annotation.Scheduled;
-
-import java.time.Instant;
 
 @Configuration
 @Slf4j
-@EnableScheduling
 @RequiredArgsConstructor
 public class SchedulingConfig {
 
