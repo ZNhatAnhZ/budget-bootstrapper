@@ -1,17 +1,16 @@
 package com.budgetbootstrapper.crawler_mangement.config;
 
-import com.budgetbootstrapper.crawler_mangement.service.CrawlerExternalService;
+import com.budgetbootstrapper.crawler_mangement.service.AnimalNewsCrawlerService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.scheduling.annotation.EnableScheduling;
 
 @Configuration
 @Slf4j
 @RequiredArgsConstructor
 public class SchedulingConfig {
 
-    private final CrawlerExternalService crawlerExternalService;
+    private final AnimalNewsCrawlerService crawlerExternalService;
 
 //  @Scheduled(cron = "${crawler.cron-expression}")
 //  public void startCrawlerCronJob() {
