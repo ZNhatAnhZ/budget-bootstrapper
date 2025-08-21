@@ -52,20 +52,21 @@ console.log('Object argument: ', objArgObj);
                     const category = await post.$eval('div>span.category', el => el.innerText);
                     const time = await post.$eval('div>span.time', el => el.innerText);
                     const newsId = link.match(/news_id=(\d+)/)[1];
-                    const existingPost = await selectPost({id: newsId});
-
-                    if (existingPost[0].length > 0) {
-                        console.log('Post with id: "%s" already exists, skipping this post.', newsId);
-                        continue;
-                    }
+                    // const existingPost = await selectPost({id: newsId});
+                    //
+                    // if (existingPost[0].length > 0) {
+                    //     console.log('Post with id: "%s" already exists, skipping this post.', newsId);
+                    //     continue;
+                    // }
 
                     const imageName = `${newsId}.jpg`;
-                    await downloadFile(imagePage, image, imageName, objArgObj.savingPath);
+                    // await downloadFile(imagePage, image, imageName, objArgObj.savingPath);
                     console.log('newsId: "%s", title: "%s", detailLink: "%s", image: "%s", category: "%s", time: "%s".', newsId, title, link, image, category, time);
 
                     let currentPage = 1;
                     let maxPage = 1; //default, will be updated later
-                    let arrayOfImages = [imageName];
+                    const mapOfNameAndImages = new Map();
+                    mapOfNameAndImages.set(imageName, image);
                     let content = '';
 
                     try {
@@ -75,10 +76,10 @@ console.log('Object argument: ', objArgObj);
                             const text = (await detailPostPage.$eval('div.text', el => el.innerText)).replaceAll("\n", "").trim();
                             content += text + " ";
                             const detailImageName = `${newsId}-${currentPage}.jpg`;
-                            arrayOfImages.push(detailImageName);
+                            mapOfNameAndImages.set(detailImageName, detailImage);
                             link = await detailPostPage.$eval('div.right>span>a', el => el.href);
                             maxPage = parseInt(await detailPostPage.$eval('span.count-pageindex', el => el.innerText), 10);
-                            await downloadFile(imagePage, detailImage, detailImageName, objArgObj.savingPath);
+                            // await downloadFile(imagePage, detailImage, detailImageName, objArgObj.savingPath);
 
                             console.log('currentPage: "%s", maxPage: "%s", text: "%s", nextPageLink: "%s", detailImage: "%s".', currentPage, maxPage, text, link, detailImage);
                             await delay(3000); //delay 3 seconds to avoid spamming the server
@@ -88,13 +89,13 @@ console.log('Object argument: ', objArgObj);
                         console.log('Error when crawling detail page of "%s" at page: "%s"/"%s" with error: "%s"',
                             link, currentPage, maxPage, error);
                     }
-                    await insertPost({
+                    await insertPost(objArgObj.crawlerName, JSON.stringify({
                         id: newsId,
                         title: title,
                         date: time,
-                        images: JSON.stringify(arrayOfImages),
+                        images: JSON.stringify(mapOfNameAndImages),
                         content: content
-                    });
+                    }));
                 } catch (error) {
                     console.log('Error when crawling post with error: "%s", skipping this post.', error);
                 }

@@ -1,4 +1,5 @@
 const mysql = require('mysql2/promise');
+import {v4 as uuidv4} from 'uuid';
 
 let pool;
 
@@ -25,7 +26,7 @@ function closingConnectionPool() {
 }
 
 async function selectPost(post) {
-    return pool.query('SELECT * FROM news where id = ?',
+    return pool.query('SELECT * FROM crawler_jobs where id = ?',
         [post.id],
         function (error, results, fields) {
             if (error) {
@@ -34,9 +35,9 @@ async function selectPost(post) {
         });
 }
 
-async function insertPost(post) {
-    return pool.query('INSERT INTO news (id, title, date, images, content, created_on) values (?, ?, ?, ?, ?, ?)',
-        [post.id, post.title, post.date, post.images, post.content, Math.floor(Date.now() / 1000)],
+async function insertPost(crawlerName, post) {
+    return pool.query('INSERT INTO crawler_job (id, crawler_name, content, created_on) values (?, ?, ?, ?, ?, ?)',
+        [uuidv4(), crawlerName, post, Math.floor(Date.now() / 1000)],
         function (error, results, fields) {
             if (error) {
                 console.log('Error when inserting a new post with error: "%s".', error);

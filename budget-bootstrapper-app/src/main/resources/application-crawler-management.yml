@@ -1,14 +1,18 @@
-#crawler-management:
-#  args:
-#    host: ${MYSQL_HOST:localhost}
-#    port: ${MYSQL_PORT:3306}
-#    user: ${MYSQL_USERNAME:root}
-#    password: ${MYSQL_PASSWORD:root}
-#    database: ${MYSQL_DB:animal_news}
-#    maxIndex: ${CRAWLER_MAX_INDEX:60}
-#    targetUrl: ${CRAWLER_TARGET_URL:http://www.onegreatlifestyle.com/index.html?cate_id=5170}
-#    savingPath: ${CRAWLER_SAVING_PATH:../animal_images/public/}
-#  script-directory: ${CRAWLER_SCRIPT_DIRECTORY:../animal-crawler/}
-#  pushing-to-git-script-directory: ${CRAWLER_PUSH_TO_GIT_DIRECTORY:../animal_images/}
-#  cron-expression: 0 * * * * *
-#
+crawler-management:
+  jobs:
+    cron-expression: "*/10 * * * * *"
+    limit: 10
+  animal-news:
+    cron-expression: "* * 0 * * *"
+    script-directory: ${CRAWLER_SCRIPT_DIRECTORY:../animal-crawler/}
+    args:
+      crawlerName: ${CRAWLER_NAME:animal-news-1}
+      host: ${MYSQL_HOST:localhost}
+      port: ${MYSQL_PORT:3306}
+      user: ${MYSQL_USERNAME:root}
+      password: ${MYSQL_PASSWORD:root}
+      database: ${MYSQL_DB:animal_news}
+      connectionLimit: ${MYSQL_CONNECTION_LIMIT:1}
+      maxIndex: ${CRAWLER_MAX_INDEX:60}
+      targetUrl: ${CRAWLER_TARGET_URL:http://www.onegreatlifestyle.com/index.html?cate_id=5170}
+      savingPath: ${CRAWLER_SAVING_PATH:../animal_images/public/}

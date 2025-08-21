@@ -1,4 +1,4 @@
-package com.budgetbootstrapper.crawler_mangement.config;
+package com.budgetbootstrapper.crawler_management.config;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -7,11 +7,10 @@ import org.springframework.context.annotation.Configuration;
 import java.util.Map;
 
 @Configuration
-@ConfigurationProperties(prefix = "crawler")
+@ConfigurationProperties(prefix = "crawler-management.animal-news")
 @Data
-public class CrawlerConfig {
+public class AnimalNewsCrawlerConfig {
     private Map<String, String> args;
     private String scriptDirectory;
-    private String pushingToGitScriptDirectory;
     private String cronExpression;
 }
