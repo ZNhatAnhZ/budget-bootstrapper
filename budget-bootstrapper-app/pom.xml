@@ -16,6 +16,7 @@
         <spring-modulith.version>1.4.1</spring-modulith.version>
         <java-jwt.version>4.4.0</java-jwt.version>
         <hypersistence-utils-hibernate-63.version>3.8.2</hypersistence-utils-hibernate-63.version>
+        <org.mapstruct.version>1.6.3</org.mapstruct.version>
     </properties>
 
 	<dependencies>
@@ -129,6 +130,11 @@
             <groupId>io.hypersistence</groupId>
             <artifactId>hypersistence-utils-hibernate-63</artifactId>
             <version>${hypersistence-utils-hibernate-63.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.mapstruct</groupId>
+            <artifactId>mapstruct</artifactId>
+            <version>${org.mapstruct.version}</version>
         </dependency>
 	</dependencies>
 

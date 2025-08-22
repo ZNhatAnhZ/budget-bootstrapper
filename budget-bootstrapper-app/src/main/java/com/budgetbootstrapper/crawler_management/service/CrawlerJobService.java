@@ -1,5 +1,6 @@
 package com.budgetbootstrapper.crawler_management.service;
 
+import com.budgetbootstrapper.crawler_management.mapper.AnimalNewsCrawlerJobMapper;
 import com.budgetbootstrapper.crawler_management.repository.CrawlerJobRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,6 +18,8 @@ public class CrawlerJobService {
 
     private final ApplicationEventPublisher applicationEventPublisher;
 
+    private final AnimalNewsCrawlerJobMapper animalNewsCrawlerJobMapper;
+
     @Value("${crawler-management.jobs.limit}")
     private final int limit;
 
@@ -25,7 +28,10 @@ public class CrawlerJobService {
         log.info("Starting job processing");
         crawlerJobRepository.getCrawlerJobs(limit).forEach(job -> {
             log.info("Processing job: {}", job.getId());
-            // Add your job processing logic here
+            applicationEventPublisher.publishEvent(animalNewsCrawlerJobMapper.toAnimalNewsCreationEvent(job));
+            log.info("Published event for job: {}", job.getId());
+            crawlerJobRepository.delete(job);
+            log.info("Deleted job: {}", job.getId());
         });
         log.info("Job processing completed");
     }

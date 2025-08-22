@@ -11,4 +11,6 @@ public class StorageConfig {
     private String pushFileToGitScriptDirectory;
     private String pushFileToGitScriptName;
     private String baseUrl;
+    private String localStoragePath;
+    private String gitRepositoryUrl;
 }

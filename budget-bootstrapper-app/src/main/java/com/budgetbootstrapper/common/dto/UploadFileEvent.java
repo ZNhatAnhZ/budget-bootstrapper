@@ -1,4 +1,4 @@
-package com.budgetbootstrapper.file_storage.dto;
+package com.budgetbootstrapper.common.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -6,5 +6,6 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class UploadFileEvent {
-    String filePath;
+    private String fileName;
+    private String downloadUrl;
 }
