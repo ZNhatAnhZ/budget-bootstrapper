@@ -21,7 +21,6 @@ import java.util.List;
 public class News {
 
     @Id
-    @GeneratedValue
     private int id;
 
     private String title;

@@ -20,8 +20,8 @@ public class SchedulingConfig {
 
     @Scheduled(cron = "${crawler-management.jobs.cron-expression}")
     public void startJobProcessing() {
-        log.info("Running startAnimalNewsCrawler at {}", Instant.now());
-        animalNewsCrawlerService.startCrawler();
+        log.info("Running startJobProcessing at {}", Instant.now());
+        crawlerJobService.startJobProcessing();
     }
 
     @Scheduled(cron = "${crawler-management.animal-news.cron-expression}")

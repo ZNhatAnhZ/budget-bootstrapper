@@ -1,5 +1,5 @@
 const mysql = require('mysql2/promise');
-import {v4 as uuidv4} from 'uuid';
+const uuid = require('uuid');
 
 let pool;
 
@@ -37,7 +37,7 @@ async function selectPost(post) {
 
 async function insertPost(crawlerName, post) {
     return pool.query('INSERT INTO crawler_job (id, crawler_name, content, created_on) values (?, ?, ?, ?, ?, ?)',
-        [uuidv4(), crawlerName, post, Math.floor(Date.now() / 1000)],
+        [uuid.uuidv4(), crawlerName, post, Math.floor(Date.now() / 1000)],
         function (error, results, fields) {
             if (error) {
                 console.log('Error when inserting a new post with error: "%s".', error);

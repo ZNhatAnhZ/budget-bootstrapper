@@ -21,7 +21,7 @@ public class AnimalNewsCrawlerService {
             ProcessBuilder pb =
                     new ProcessBuilder(
                             "node",
-                            "index.js",
+                            "animal_news_1.js",
                             JacksonUtil.toString(animalNewsCrawlerConfig.getArgs())); // Command to execute
             pb.directory(new File(animalNewsCrawlerConfig.getScriptDirectory())) // Set current directory
                     .redirectOutput(ProcessBuilder.Redirect.INHERIT) // Redirect output to console

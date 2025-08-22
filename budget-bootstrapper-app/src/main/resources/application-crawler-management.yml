@@ -15,4 +15,4 @@ crawler-management:
       connectionLimit: ${MYSQL_CONNECTION_LIMIT:1}
       maxIndex: ${CRAWLER_MAX_INDEX:60}
       targetUrl: ${CRAWLER_TARGET_URL:http://www.onegreatlifestyle.com/index.html?cate_id=5170}
-      savingPath: ${CRAWLER_SAVING_PATH:../animal_images/public/}
+#      savingPath: ${CRAWLER_SAVING_PATH:../animal_images/public/}

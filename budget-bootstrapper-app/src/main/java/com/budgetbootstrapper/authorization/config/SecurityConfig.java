@@ -61,6 +61,8 @@ public class SecurityConfig {
     return http.sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .csrf(AbstractHttpConfigurer::disable)
             .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+            .authorizeHttpRequests(
+                    auth -> auth.requestMatchers("/news/**").permitAll().anyRequest().authenticated())
             .oauth2ResourceServer(rs -> rs.jwt(Customizer.withDefaults()))
             .build();
   }
