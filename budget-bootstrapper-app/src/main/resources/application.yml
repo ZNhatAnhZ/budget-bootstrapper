@@ -4,7 +4,7 @@ spring:
   profiles:
     active: animal-news, authorization, file-storage, crawler-management
   datasource:
-    url: "jdbc:postgresql://localhost:5432/${POSTGRES_DB:mydatabase}"
+    url: "jdbc:postgresql://localhost:5432/${POSTGRES_DB:budget_bootstrapper}"
     username: ${POSTGRES_USER:budget_user}
     password: ${POSTGRES_PASSWORD:budget_password}
   flyway:

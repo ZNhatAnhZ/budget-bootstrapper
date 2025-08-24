@@ -11,9 +11,8 @@ CREATE TABLE news
 
 CREATE TABLE crawler_job
 (
-    id           INTEGER NOT NULL,
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid (),
     crawler_name VARCHAR,
-    content      VARCHAR,
-    created_on TIMESTAMP,
-    CONSTRAINT pk_crawler_job PRIMARY KEY (id)
+    content      JSON,
+    created_on TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
