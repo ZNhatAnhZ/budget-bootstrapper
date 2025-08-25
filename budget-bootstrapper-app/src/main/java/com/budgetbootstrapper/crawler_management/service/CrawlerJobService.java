@@ -9,6 +9,9 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import static com.budgetbootstrapper.crawler_management.entity.CrawlerJob.CrawlerJobState.FAILED;
+import static com.budgetbootstrapper.crawler_management.entity.CrawlerJob.CrawlerJobState.SUCCESS;
+
 @Service
 @Slf4j
 @RequiredArgsConstructor
@@ -27,12 +30,18 @@ public class CrawlerJobService {
     public void startJobProcessing() {
         log.info("Starting job processing");
         crawlerJobRepository.getCrawlerJobs(limit).forEach(job -> {
-            log.info("Processing job: {}", job.getId());
-            applicationEventPublisher.publishEvent(animalNewsCrawlerJobMapper.toAnimalNewsCreationEvent(job));
-            log.info("Published event for job: {}", job.getId());
-            crawlerJobRepository.delete(job);
-            log.info("Deleted job: {}", job.getId());
+            try {
+                log.info("Processing job: {}", job.getId());
+                applicationEventPublisher.publishEvent(animalNewsCrawlerJobMapper.toAnimalNewsCreationEvent(job));
+                log.info("Published event for job: {}", job.getId());
+                job.setState(SUCCESS);
+                log.info("Done processing job: {}", job.getId());
+            } catch (Exception e) {
+                log.error("Error processing job: {}", job.getId(), e);
+                job.setState(FAILED);
+            }
+            crawlerJobRepository.save(job);
         });
-        log.info("Job processing completed");
+        log.info("Batch job processing completed");
     }
 }
