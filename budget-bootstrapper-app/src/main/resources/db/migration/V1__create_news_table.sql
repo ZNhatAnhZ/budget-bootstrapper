@@ -1,18 +1,29 @@
-CREATE TABLE news
+CREATE TABLE IF NOT EXISTS news
 (
-    id         INTEGER NOT NULL,
-    title VARCHAR NULL,
-    date  VARCHAR NULL,
-    images     JSON NULL,
-    content    TEXT NULL,
-    created_on TIMESTAMP NULL,
-    CONSTRAINT pk_news PRIMARY KEY (id)
+    id          UUID PRIMARY KEY         DEFAULT gen_random_uuid(),
+    category    UUID NULL,
+    title       VARCHAR NULL,
+    content     TEXT NULL,
+    created_on  TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    metadata    JSONB NULL,
+    external_id VARCHAR NULL,
+    CONSTRAINT pk_external_id UNIQUE (external_id)
 );
 
-CREATE TABLE crawler_job
+CREATE TABLE IF NOT EXISTS category
 (
-    id UUID PRIMARY KEY DEFAULT gen_random_uuid (),
+    id          UUID PRIMARY KEY,
+    name        VARCHAR NOT NULL,
+    description TEXT,
+    created_on  TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS crawler_job
+(
+    id           UUID PRIMARY KEY         DEFAULT gen_random_uuid(),
     crawler_name VARCHAR,
-    content      JSON,
-    created_on TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+    content      JSONB,
+    state        VARCHAR DEFAULT 'INIT' NOT NULL,
+    metadata     JSONB NULL,
+    created_on   TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );

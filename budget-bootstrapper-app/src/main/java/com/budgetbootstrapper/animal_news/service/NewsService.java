@@ -5,6 +5,7 @@ import com.budgetbootstrapper.animal_news.exception.ResourceNotFoundException;
 import com.budgetbootstrapper.animal_news.repository.NewsRepository;
 import com.budgetbootstrapper.common.dto.AnimalNewsCreationEvent;
 import com.budgetbootstrapper.common.dto.UploadFileEvent;
+import io.hypersistence.utils.hibernate.type.json.internal.JacksonUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationEventPublisher;
@@ -13,8 +14,10 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+
+import static com.budgetbootstrapper.animal_news.entity.News.NEWS_CREATED_ON;
+import static com.budgetbootstrapper.animal_news.entity.News.NEWS_METADATA_IMAGES;
 
 @Service
 @RequiredArgsConstructor
@@ -29,12 +32,11 @@ public class NewsService {
 
     public Page<News> getAllPartialNews(int page, int size) {
         Page<News> pageList =
-                newsRepository.findAll(PageRequest.of(page, size, Sort.by("createdOn").descending()));
+                newsRepository.findAll(PageRequest.of(page, size, Sort.by(NEWS_CREATED_ON).descending()));
 
         return pageList.map(
                 e -> {
-                    e.setImages(List.of(e.getImages().getFirst()));
-                    e.setCreatedOn(e.getCreatedOn());
+                    getTitleNewsImageName(e);
                     e.setContent(e.getContent().substring(0, 400));
                     convertImageUrlUsingThePrefix(e);
                     return e;
@@ -57,17 +59,40 @@ public class NewsService {
 
     public void createNews(AnimalNewsCreationEvent event) {
         event.getImages().forEach((fileName, downloadUrl) -> applicationEventPublisher.publishEvent(new UploadFileEvent(fileName, downloadUrl)));
+        Map<String, Object> metadata = new HashMap<>();
+        metadata.put(NEWS_METADATA_IMAGES, new ArrayList<>(event.getImages().keySet()));
         newsRepository.save(News.builder()
-                .id(event.getId())
+                .id(UUID.randomUUID())
                 .title(event.getTitle())
                 .date(event.getDate())
-                .images(new ArrayList<>(event.getImages().keySet()))
+                .metadata(metadata)
                 .content(event.getContent())
                 .createdOn(event.getCreatedOn())
+                .externalId(String.valueOf(event.getId()))
                 .build());
     }
 
+    @SuppressWarnings("unchecked")
     private void convertImageUrlUsingThePrefix(News e) {
-        e.setImages(e.getImages().stream().map(image -> imageUrlPrefix + image).toList());
+        e.setMetadata(Optional.ofNullable(e.getMetadata())
+                .map(metadata -> metadata.get(NEWS_METADATA_IMAGES))
+                .map(Object::toString)
+                .map(imageListStr -> JacksonUtil.fromString(imageListStr, List.class))
+                .map(imageNameList -> (List<String>) imageNameList)
+                .map(imageList -> imageList.stream().map(imageName -> imageUrlPrefix + imageName).toList())
+                .map(imageUrlList -> {
+                    Map<String, Object> metadata = new HashMap<>();
+                    metadata.put(NEWS_METADATA_IMAGES, imageUrlList);
+                    return metadata;
+                }).orElse(Map.of())
+        );
+    }
+
+    @SuppressWarnings("unchecked")
+    private void getTitleNewsImageName(News e) {
+        Map<String, Object> metadata = e.getMetadata();
+        List<String> images = JacksonUtil.fromString(e.getMetadata().get(NEWS_METADATA_IMAGES).toString(), List.class);
+        metadata.put(NEWS_METADATA_IMAGES, images.getFirst());
+        e.setMetadata(metadata);
     }
 }

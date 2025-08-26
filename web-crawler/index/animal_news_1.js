@@ -61,6 +61,7 @@ const objArgObj = initAndParseArgsConfig(process.argv[2]);
                     await insertPost(objArgObj.crawlerName, JSON.stringify({
                         id: newsId,
                         title: title,
+                        category: category,
                         date: time,
                         images: Object.fromEntries(mapOfNameAndImages),
                         content: content
