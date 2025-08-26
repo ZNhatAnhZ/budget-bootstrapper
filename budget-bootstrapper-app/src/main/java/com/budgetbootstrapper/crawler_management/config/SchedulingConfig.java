@@ -24,9 +24,9 @@ public class SchedulingConfig {
         crawlerJobService.startJobProcessing();
     }
 
-    @Scheduled(cron = "${crawler-management.animal-news.cron-expression}")
-    public void startAnimalNewsCrawler() {
-        log.info("Running startAnimalNewsCrawler at {}", Instant.now());
-        animalNewsCrawlerService.startCrawler();
-    }
+//    @Scheduled(cron = "${crawler-management.animal-news.cron-expression}")
+//    public void startAnimalNewsCrawler() {
+//        log.info("Running startAnimalNewsCrawler at {}", Instant.now());
+//        animalNewsCrawlerService.startCrawler();
+//    }
 }
