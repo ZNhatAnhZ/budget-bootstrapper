@@ -9,7 +9,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
 
-import java.time.OffsetDateTime;
+import java.time.Instant;
 import java.util.UUID;
 
 @Getter
@@ -30,6 +30,6 @@ public class Category {
 
     @ColumnDefault("CURRENT_TIMESTAMP")
     @Column(name = "created_on")
-    private OffsetDateTime createdOn;
+    private Instant createdOn;
 
 }

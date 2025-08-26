@@ -7,7 +7,7 @@ import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 
-import java.time.OffsetDateTime;
+import java.time.Instant;
 import java.util.Map;
 import java.util.UUID;
 
@@ -41,7 +41,7 @@ public class CrawlerJob {
 
     @ColumnDefault("CURRENT_TIMESTAMP")
     @Column(name = "created_on")
-    private OffsetDateTime createdOn;
+    private Instant createdOn;
 
     public enum CrawlerJobState {
         INIT,
