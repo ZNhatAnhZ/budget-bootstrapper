@@ -12,3 +12,9 @@ spring:
     locations: classpath:db/migration
   jpa:
     show-sql: true
+
+  modulith:
+    events:
+      externalization:
+        enabled: false
+      completion-mode: delete

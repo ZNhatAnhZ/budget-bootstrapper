@@ -18,5 +18,6 @@ public class AnimalNewsReceiver {
     void onCreationEvent(AnimalNewsCreationEvent event) {
         log.info("Received AnimalNewsCreationEvent: {}", event);
         newsService.createNews(event);
+        log.info("Processed AnimalNewsCreationEvent: {}", event);
     }
 }

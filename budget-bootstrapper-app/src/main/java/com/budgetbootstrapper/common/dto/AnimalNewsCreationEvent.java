@@ -3,7 +3,6 @@ package com.budgetbootstrapper.common.dto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
-import java.time.Instant;
 import java.util.Map;
 
 @Data
@@ -18,7 +17,7 @@ public class AnimalNewsCreationEvent {
     // Key: image name, Value: image URL
     private Map<String, String> images;
 
-    private String content;
+    private String category;
 
-    private Instant createdOn;
+    private String content;
 }

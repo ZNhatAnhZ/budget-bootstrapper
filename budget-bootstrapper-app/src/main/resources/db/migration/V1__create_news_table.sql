@@ -16,6 +16,7 @@ CREATE TABLE IF NOT EXISTS category
     name        VARCHAR NOT NULL,
     description TEXT,
     created_on  TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+    CONSTRAINT  name_unique UNIQUE (name)
 );
 
 CREATE TABLE IF NOT EXISTS crawler_job

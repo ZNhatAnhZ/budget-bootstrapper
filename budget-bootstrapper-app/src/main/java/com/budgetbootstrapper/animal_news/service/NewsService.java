@@ -1,27 +1,34 @@
 package com.budgetbootstrapper.animal_news.service;
 
+import com.budgetbootstrapper.animal_news.entity.Category;
 import com.budgetbootstrapper.animal_news.entity.News;
 import com.budgetbootstrapper.animal_news.exception.ResourceNotFoundException;
+import com.budgetbootstrapper.animal_news.repository.CategoryRepository;
 import com.budgetbootstrapper.animal_news.repository.NewsRepository;
 import com.budgetbootstrapper.common.dto.AnimalNewsCreationEvent;
 import com.budgetbootstrapper.common.dto.UploadFileEvent;
 import io.hypersistence.utils.hibernate.type.json.internal.JacksonUtil;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
-import static com.budgetbootstrapper.animal_news.entity.News.NEWS_CREATED_ON;
-import static com.budgetbootstrapper.animal_news.entity.News.NEWS_METADATA_IMAGES;
+import static com.budgetbootstrapper.animal_news.entity.News.*;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class NewsService {
+
+    private final CategoryRepository categoryRepository;
 
     private final NewsRepository newsRepository;
 
@@ -57,19 +64,36 @@ public class NewsService {
                                         String.format("Can not find the news with id: %s", id)));
     }
 
+    @SuppressWarnings("java:S6809")
+    @Transactional
     public void createNews(AnimalNewsCreationEvent event) {
         event.getImages().forEach((fileName, downloadUrl) -> applicationEventPublisher.publishEvent(new UploadFileEvent(fileName, downloadUrl)));
         Map<String, Object> metadata = new HashMap<>();
         metadata.put(NEWS_METADATA_IMAGES, new ArrayList<>(event.getImages().keySet()));
+        metadata.put(NEWS_METADATA_DATE, event.getDate());
         newsRepository.save(News.builder()
                 .id(UUID.randomUUID())
+                .category(getOrCreateCategory(event))
                 .title(event.getTitle())
-                .date(event.getDate())
                 .metadata(metadata)
                 .content(event.getContent())
-                .createdOn(event.getCreatedOn())
                 .externalId(String.valueOf(event.getId()))
                 .build());
+    }
+
+    @Transactional
+    public Category getOrCreateCategory(AnimalNewsCreationEvent event) {
+        return categoryRepository.findByName(event.getCategory()).orElseGet(() -> {
+            try {
+                return categoryRepository.save(Category.builder()
+                        .id(UUID.randomUUID())
+                        .name(event.getCategory())
+                        .build());
+            } catch (DataIntegrityViolationException e) {
+                log.warn("Category {} already exists, likely created by another transaction.", event.getCategory());
+                return categoryRepository.getByName(event.getCategory());
+            }
+        });
     }
 
     @SuppressWarnings("unchecked")

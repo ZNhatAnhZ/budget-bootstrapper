@@ -30,7 +30,7 @@ public class CrawlerJob {
     @JdbcTypeCode(SqlTypes.JSON)
     private String content;
 
-    @NotNull
+    @Enumerated(EnumType.STRING)
     @ColumnDefault("'INIT'")
     @Column(name = "state", nullable = false, length = Integer.MAX_VALUE)
     private CrawlerJobState state;

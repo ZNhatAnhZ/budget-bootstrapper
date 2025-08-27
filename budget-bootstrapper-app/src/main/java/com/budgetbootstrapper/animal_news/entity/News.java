@@ -18,6 +18,8 @@ import java.util.UUID;
 @AllArgsConstructor
 public class News {
 
+    public static final String NEWS_METADATA_DATE = "date";
+
     public static final String NEWS_METADATA_IMAGES = "images";
 
     public static final String NEWS_CREATED_ON = "createdOn";
@@ -27,8 +29,6 @@ public class News {
     private UUID id;
 
     private String title;
-
-    private String date;
 
     @Type(JsonType.class)
     @Column(columnDefinition = "json")
