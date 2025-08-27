@@ -29,7 +29,7 @@ public class CrawlerJobService {
     @Transactional
     public void startJobProcessing() {
         log.info("Starting job processing");
-        crawlerJobRepository.getCrawlerJobs(limit).forEach(job -> {
+        crawlerJobRepository.getInitCrawlerJobs(limit).forEach(job -> {
             try {
                 log.info("Processing job: {}", job.getId());
                 applicationEventPublisher.publishEvent(animalNewsCrawlerJobMapper.toAnimalNewsCreationEvent(job));

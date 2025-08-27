@@ -9,6 +9,6 @@ import java.util.List;
 
 public interface CrawlerJobRepository extends JpaRepository<CrawlerJob, Integer> {
     @Transactional
-    @Query(value = "SELECT * from crawler_job LIMIT ?1 FOR UPDATE SKIP LOCKED", nativeQuery = true)
-    List<CrawlerJob> getCrawlerJobs(int limit);
+    @Query(value = "SELECT * from crawler_job WHERE state = 'INIT' LIMIT ?1 FOR UPDATE SKIP LOCKED", nativeQuery = true)
+    List<CrawlerJob> getInitCrawlerJobs(int limit);
 }

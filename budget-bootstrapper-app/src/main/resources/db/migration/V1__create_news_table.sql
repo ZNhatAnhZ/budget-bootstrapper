@@ -12,10 +12,17 @@ CREATE TABLE IF NOT EXISTS news
 
 CREATE TABLE IF NOT EXISTS category
 (
-    id          UUID PRIMARY KEY,
+    id
+    UUID
+    PRIMARY
+    KEY
+    DEFAULT
+    gen_random_uuid
+(
+),
     name        VARCHAR NOT NULL,
     description TEXT,
-    created_on  TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+    created_on TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT  name_unique UNIQUE (name)
 );
 

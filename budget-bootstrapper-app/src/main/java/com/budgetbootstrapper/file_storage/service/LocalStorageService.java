@@ -22,6 +22,30 @@ public class LocalStorageService implements StorageService {
     @Override
     public String save(String filename, String filePathSrc) {
         File file = new File(storageConfig.getLocalStoragePath(), filename);
+
+        try {
+            File parentDir = file.getParentFile();
+            if (parentDir == null || !parentDir.exists()) {
+                boolean dirsCreated = parentDir.mkdirs();
+                if (dirsCreated) {
+                    log.info("Parent directories created: " + parentDir.getAbsolutePath());
+                } else {
+                    log.info("Failed to create parent directories: " + parentDir.getAbsolutePath());
+                    throw new StorageException("Failed to create parent directories: " + parentDir.getAbsolutePath());
+                }
+            }
+            boolean result = file.createNewFile();
+            if (result) {
+                log.info("File created: " + file.getAbsolutePath());
+            } else {
+                log.info("File already exists: " + file.getAbsolutePath());
+            }
+        } catch (Exception e) {
+            String message = "Failed to create file: %s in path: %s".formatted(filename, storageConfig.getLocalStoragePath());
+            log.error(message, e);
+            throw new StorageException(message, e);
+        }
+
         try (ReadableByteChannel rbc = Channels.newChannel(new URI(filePathSrc).toURL().openStream());
              FileOutputStream fos = new FileOutputStream(file)) {
             fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
