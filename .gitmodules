@@ -1,0 +1,3 @@
+[submodule "tmp/remote_file/file-storage"]
+	path = tmp/remote_file/file-storage
+	url = git@github.com:ZNhatAnhZ/file-storage.git
