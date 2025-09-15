@@ -12,7 +12,7 @@ import java.time.Instant;
 @Configuration
 @Slf4j
 @RequiredArgsConstructor
-public class SchedulingConfig {
+public class CrawlerMgmtSchedulingConfig {
 
     private final AnimalNewsCrawlerService animalNewsCrawlerService;
 

@@ -17,7 +17,12 @@ public class AnimalNewsReceiver {
     @ApplicationModuleListener
     void onCreationEvent(AnimalNewsCreationEvent event) {
         log.info("Received AnimalNewsCreationEvent: {}", event);
-        newsService.createNews(event);
+        try {
+            newsService.createNews(event);
+        } catch (Exception e) {
+            log.error("Failed to process AnimalNewsCreationEvent: {}", event, e);
+            throw e;
+        }
         log.info("Processed AnimalNewsCreationEvent: {}", event);
     }
 }

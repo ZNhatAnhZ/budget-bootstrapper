@@ -8,4 +8,6 @@ public interface StorageService {
     boolean isFileExists(String filePath);
 
     void delete(String filePath);
+
+    String move(String sourcePath, String destinationPath);
 }

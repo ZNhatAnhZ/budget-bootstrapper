@@ -31,6 +31,7 @@ public class StorageEventReceiver {
             log.info("Result of the upload to remotePath: {} is: {}", remotePath, gitStorageService.isFileExists(event.getFileName()));
         } catch (Exception e) {
             log.error("Failed to upload file: {}", event.getFileName(), e);
+            throw e;
         } finally {
             // Clean up the local file after upload
             localStorageService.delete(absolutePath);

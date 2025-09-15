@@ -8,7 +8,8 @@ import org.springframework.context.annotation.Configuration;
 @ConfigurationProperties(prefix = "file-storage")
 @Data
 public class StorageConfig {
-    private String pushFileToGitScriptDirectory;
+    private String pushFileToGitCronExpression;
+    private String localGitFileDirectory;
     private String pushFileToGitScriptName;
     private String baseUrl;
     private String localStoragePath;
